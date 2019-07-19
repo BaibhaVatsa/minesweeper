@@ -1,7 +1,9 @@
+# import the required modules
 import random
 import math
 from datetime import datetime
 import enum
+import colorama
 
 @enum.unique
 class State(enum.Enum):
@@ -16,6 +18,7 @@ class Map:
 
 class MinesweeperMap:
     def __init__(self, size):
+        colorama.init(autoreset=True)
         self.size = size
         self.init_map()
         self.turns = 0
@@ -163,12 +166,18 @@ class MinesweeperMap:
         print("Number of Mines: " + str(self.num_mines))
 
     def print_instructions(self):
-        print("  Welcome to MINESWEEPER!")
-        print("---------------------------")
-        print("How to play:", end=" ")
-        print("After \":\" write \"r\" or \"f\" for reveal or flag followed by two valid coordinates x and y of the location you wish to be revealed or flagged.")
-        print("For example if you want to reveal the location at (2, 3) it will be \":r 2 3\" and if you want to flag the location at (2, 3) it will be \":f 2 3\"")
-
+        self.print_welcome()
+        print(colorama.Style.BRIGHT + "HOW TO PLAY\n")
+        print(": [mode] [x coordinate] [y coordinate]")
+        print()
+        self.print_coordinate_instructions()
+        self.print_reveal_instructions()
+        self.print_flag_instructions()
+        self.print_quit_instructions()
+        self.print_winning_conditions()
+        self.print_losing_conditions()
+        print()
+        
     def flag(self, x, y):
         if self.map[x][y].state == State.revealed:
             print("Invalid location: Already revealed")
@@ -233,8 +242,67 @@ class MinesweeperMap:
 
                 m, x, y = self.accept_input()
 
+
         self.print_all_revealed()
         if m == "q":
             print("Be back soon!")
         else:    
             print("Congrats!" if result == 1 else "Better luck next time!")
+
+    def print_welcome(self):
+        print(colorama.Style.BRIGHT + colorama.Fore.BLUE + r"""
+         __  __ _                                                   
+        |  \/  (_)                                                  
+        | \  / |_ _ __   ___  _____      _____  ___ _ __   ___ _ __ 
+        | |\/| | | '_ \ / _ \/ __\ \ /\ / / _ \/ _ \ '_ \ / _ \ '__|
+        | |  | | | | | |  __/\__ \\ V  V /  __/  __/ |_) |  __/ |   
+        |_|  |_|_|_| |_|\___||___/ \_/\_/ \___|\___| .__/ \___|_|   
+                                                    | |              
+                                                    |_|              
+
+        """)
+
+    def print_reveal_instructions(self):
+        print(colorama.Style.BRIGHT + "Reveal mode: r")
+        print("Reveals the value of the given tile.")
+        print(("If the underlying value is 0, it means there are no bombs in the nearby 8 tiles, 1 means that 1 of the" 
+        " 8 neighboring tiles is a bomb, and similarly moving forward. If the underlying value is a bomb, the number of"
+        " lives remaining goes down by 1. If the number of lives is already at 0, the game ends. A revealed tile cannot"
+        " be flagged."))
+        print("For example: \"r 0 0\" will reveal the value of the tile at the coordinates (0, 0).") 
+        print()
+
+    def print_flag_instructions(self):
+        print(colorama.Style.BRIGHT + "Flag mode: f")
+        print("Flags the given tile")
+        print(("A flagged tile can be unflagged or revealed (the latter will automatically do the former but not"
+        " vice-versa) anytime. Flagging a flagged tile, unflags it. A revealed tile cannot be flagged. Flagging a tile" 
+        " has no effect on number of lives remaining irrespective of the value of the tile underneath. This mode is" 
+        " meant to help you \"flag\" potential bombs."))
+        print("For example: \"f 0 0\" will flag the value of the tile at the coordinates (0, 0).")
+        print("             \"f 0 0\" later will unflag the tile at the coordinates (0, 0).")
+        print()
+
+    def print_quit_instructions(self):
+        print(colorama.Style.BRIGHT + "Quit: q")
+        print("Quits the game at any time.")
+        print("For example: \"q\" will quit the game that instant")
+        print()
+
+    def print_coordinate_instructions(self):    
+        print(colorama.Style.BRIGHT + "Entering coordinates: [x coordinate] [y coordinate]")
+        print(("[x coordinate] is the number of the row of the cell and [y coordinate] is the number of the"
+        " column of the cell. 0 (x coordinate) 0 (y coordinate) is the top left corner of the map. Coordinates"
+        " are 0 indexed."))
+        print("For example: \"0 1\" is the cell at the intersection of the 2nd column and the 1st row.")
+        print()
+    
+    def print_winning_conditions(self):
+        print(colorama.Style.BRIGHT + "Win conditions")
+        print("If all non-bomb cells have been revealed, the game is won.")
+        print()
+    
+    def print_losing_conditions(self):
+        print(colorama.Style.BRIGHT + "Lose conditions")
+        print("If the number of lives goes below 0, the game is lost.")
+        print()
