@@ -2,6 +2,9 @@
 
 Toy implementation of Minesweeper in Python meant to help me learn about stuff
 
+<!-- ## Screenshots
+ -->
+
 ## Goals
 
 - [X] board representation
@@ -12,14 +15,12 @@ Toy implementation of Minesweeper in Python meant to help me learn about stuff
 - [X] number of lives
 - [X] different modes
 - [X] detailed instructions
-- [ ] refactor ui code into another file
+- [X] decouple base and ui to separate files
+- [ ] refactor
 - [ ] screenshots
 - [ ] working agent
-- [ ] scoreboard
-- [ ] colored output
+- [X] scoreboard
+- [X] formatted output
 - [ ] documentation
 - [ ] export maps
 - [ ] save progress
-
-<!-- ## Screenshots
- -->
