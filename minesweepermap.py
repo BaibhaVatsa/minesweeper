@@ -194,6 +194,10 @@ class MinesweeperMap:
                 map_revealed_str += str(self.map[i][j].val if self.map[i][j].val != -1 else "[X]") + "\t"
             map_revealed_str += "\n"
 
+    def export_map(self, out):
+        self.generate_map(self.size//2, self.size//2)
+        out(self.map_revealed())
+
     def play(self, out=print):
         result = 0
         m, x, y = self.accept_input()

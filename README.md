@@ -22,5 +22,5 @@ Toy implementation of Minesweeper in Python meant to help me learn about stuff
 - [X] scoreboard
 - [X] formatted output
 - [ ] documentation
-- [ ] export maps
+- [X] export maps
 - [ ] save progress

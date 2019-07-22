@@ -127,8 +127,10 @@ class MinesweeperUI:
         self.print_whitespace(1)
 
     def export_map(self):
-        # TODO
-        print("Yet to be implemented!")
+        from datetime import datetime
+        fil = open(str(datetime.now()), "w")
+        self.game.export_map(out=fil.write)
+        fil.close()
         self.go_back_to_menu()
 
     def play(self):
