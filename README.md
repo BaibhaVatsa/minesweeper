@@ -16,11 +16,12 @@ Toy implementation of Minesweeper in Python meant to help me learn about stuff
 - [X] different modes
 - [X] detailed instructions
 - [X] decouple base and ui to separate files
-- [ ] refactor
+- [X] refactor
 - [ ] screenshots
 - [ ] working agent
 - [X] scoreboard
 - [X] formatted output
 - [ ] documentation
 - [X] export maps
+- [ ] load maps
 - [ ] save progress

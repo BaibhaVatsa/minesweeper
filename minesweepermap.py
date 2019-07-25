@@ -56,7 +56,7 @@ class MinesweeperMap:
                 if self.map[i][j].val != -1:
                     self.map[i][j].val += self.nearby_bombs(i, j)
 
-    def nearby_bombs(self, i, j):
+    def nearby_bombs(self, i, j) -> int:
         num_bombs = 0
         if i > 0:
             num_bombs += 1 if self.map[i - 1][j].val == -1 else 0
@@ -84,7 +84,7 @@ class MinesweeperMap:
 
         return num_bombs
 
-    def reveal(self, x, y, num_revealed=0):
+    def reveal(self, x, y, num_revealed=0) -> (int, int):
         already_revealed = True
         if self.map[x][y].state != State.REVEALED:
             already_revealed = False
@@ -121,13 +121,13 @@ class MinesweeperMap:
 
         return self.map[x][y].val, num_revealed + (0 if already_revealed else 1)
 
-    def validate_input(self, x, y):
+    def validate_input(self, x, y) -> bool:
         return x >= 0 and x < self.size and y >= 0 and y < self.size
 
-    def validate_mode(self, m):
+    def validate_mode(self, m) -> bool:
         return m == "r" or m == "f" or m == "q"
 
-    def validate_move(self, move):
+    def validate_move(self, move) -> (bool, str, int, int):
         move_list = move.split()
         if len(move_list) == 3:
             m = move_list[0]
@@ -152,7 +152,7 @@ class MinesweeperMap:
             self.map[x][y].state = State.FLAGGED
             self.flags += 1
 
-    def accept_input(self):
+    def accept_input(self) -> (str, int, int):
         move = input(":")
         err, m, x, y = self.validate_move(move)
         while err == False:
@@ -169,7 +169,7 @@ class MinesweeperMap:
         stats_str += "Number of Mines: " + str(self.num_mines)
         stats_str += "\n"
 
-    def get_map_str(self):
+    def get_map_str(self) -> str:
         map_str = ""
         for i in range(self.size):
             for j in range(self.size):
@@ -187,18 +187,19 @@ class MinesweeperMap:
         play_str += self.get_stats_str()
         play_str += self.get_map_str()
 
-    def map_revealed(self):
+    def map_revealed(self) -> str:
         map_revealed_str = ""
         for i in range(self.size):
             for j in range(self.size):
                 map_revealed_str += str(self.map[i][j].val if self.map[i][j].val != -1 else "[X]") + "\t"
             map_revealed_str += "\n"
+        return map_revealed_str
 
     def export_map(self, out):
         self.generate_map(self.size//2, self.size//2)
-        out(self.map_revealed())
+        out(str(self.size) + " " + str(self.num_mines) + "\n" + self.map_revealed())
 
-    def play(self, out=print):
+    def play(self, out=print) -> int:
         result = 0
         m, x, y = self.accept_input()
 

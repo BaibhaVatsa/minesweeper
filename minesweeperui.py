@@ -87,23 +87,23 @@ class MinesweeperUI:
         self.print_whitespace(1)
         self.go_back_to_menu()
 
-    # def print(self):
-    #     self.print_stats()
-    #     self.print_whitespace(2)
-    #     self.print_map()
-    #     self.print_whitespace(2)
+    def print(self):
+        self.print_stats()
+        self.print_whitespace(2)
+        self.print_map()
+        self.print_whitespace(2)
 
     def print_all_revealed(self):
         print(self.game.map_revealed())
         self.print_whitespace(1)
 
-    # def print_map(self):
-    #     print(self.game.get_map_str())
-    #     self.print_whitespace(1)
+    def print_map(self):
+        print(self.game.get_map_str())
+        self.print_whitespace(1)
 
-    # def print_stats(self):
-    #     self.print_header(self.game.get_stats)
-    #     self.print_whitespace(1)
+    def print_stats(self):
+        self.print_header(self.game.get_stats_str())
+        self.print_whitespace(1)
 
     def print_whitespace(self, num):
         for _ in range(num):
@@ -127,8 +127,8 @@ class MinesweeperUI:
         self.print_whitespace(1)
 
     def export_map(self):
-        from datetime import datetime
-        fil = open(str(datetime.now()), "w")
+        import time
+        fil = open(str(int(round(time.time() * 1000)))+".txt", "w")
         self.game.export_map(out=fil.write)
         fil.close()
         self.go_back_to_menu()
@@ -142,7 +142,8 @@ class MinesweeperUI:
         self.go_back_to_menu()
 
     def go_back_to_menu(self):
-        input("Press any key to go back to the menu...")
+        input("Press enter to go back to the menu...")
+        self.print_whitespace(1)
 
     def print_about(self):
         self.print_header("ABOUT")
@@ -152,15 +153,16 @@ class MinesweeperUI:
         self.print_whitespace(1)
         self.go_back_to_menu()
 
-    def choose_option(self):
+    def choose_option(self) -> str:
         self.print_menu()
         choice = input("Choose option: ")
         self.print_whitespace(1)
-        valid_options = [MenuOptions.HOWTO, MenuOptions.PLAY, MenuOptions.EXPORT, MenuOptions.EXIT, MenuOptions.ABOUT]
+        valid_options = [x.value for x in MenuOptions]
         while choice not in valid_options:
             print("Please choose from valid options")
+            self.print_whitespace(1)        
             self.print_menu()
-            choice = input("Choose option:")
+            choice = input("Choose option: ")
             self.print_whitespace(1)
         return choice
 
@@ -168,7 +170,7 @@ class MinesweeperUI:
         self.print_header("THANK YOU for playing!")
         print("Feel free to reach out at @BaibhavVatsa on Twitter")
 
-    def is_valid_size(self, size):
+    def is_valid_size(self, size) -> (bool, int):
         try:
             size_val = int(size)
             if size_val > 0:
@@ -194,16 +196,16 @@ class MinesweeperUI:
     def run(self):
         self.print_welcome()
         choice = self.choose_option()
-        while choice != MenuOptions.EXIT:
-            if choice == MenuOptions.PLAY or choice == MenuOptions.EXPORT:
+        while choice != MenuOptions.EXIT.value:
+            if choice == MenuOptions.PLAY.value or choice == MenuOptions.EXPORT.value:
                 self.declare_minesweeper_map()
-                if choice == MenuOptions.PLAY:
+                if choice == MenuOptions.PLAY.value:
                     self.play()
                 else:
                     self.export_map()
-            elif choice == MenuOptions.HOWTO:
+            elif choice == MenuOptions.HOWTO.value:
                 self.print_instructions()
-            elif choice == MenuOptions.ABOUT:
+            elif choice == MenuOptions.ABOUT.value:
                 self.print_about()
             choice = self.choose_option()
         self.print_thankyou()
