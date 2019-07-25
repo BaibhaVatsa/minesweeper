@@ -34,8 +34,8 @@ class MinesweeperUI:
         print(("If the underlying value is 0, it means there are no bombs in the nearby 8 tiles, 1 means that 1 of the"
                " 8 neighboring tiles is a bomb, and similarly moving forward. If the underlying value is a bomb, the number of"
                " lives remaining goes down by 1. If the number of lives is already at 0, the game ends. A revealed tile cannot"
-               " be flagged."))
-        print("For example: \"r 0 0\" will reveal the value of the tile at the coordinates (0, 0).")
+               " be flagged. The first \":\" encountered "))
+        print("For example: \"r 1 1\" will reveal the value of the tile at the coordinates (1, 1) which is the top left tile.")
         self.print_whitespace(1)
 
     def print_flag_instructions(self):
@@ -45,8 +45,8 @@ class MinesweeperUI:
                " vice-versa) anytime. Flagging a flagged tile, unflags it. A revealed tile cannot be flagged. Flagging a tile"
                " has no effect on number of lives remaining irrespective of the value of the tile underneath. This mode is"
                " meant to help you \"flag\" potential bombs."))
-        print("For example: \"f 0 0\" will flag the value of the tile at the coordinates (0, 0).")
-        print("             \"f 0 0\" later will unflag the tile at the coordinates (0, 0).")
+        print("For example: \"f 1 1\" will flag the value of the tile at the coordinates (1, 1) which is the top left tile.")
+        print("             \"f 1 1\" later will unflag the tile at the coordinates (1, 1) which is the top left tile.")
         self.print_whitespace(1)
 
     def print_quit_instructions(self):
@@ -58,9 +58,9 @@ class MinesweeperUI:
     def print_coordinate_instructions(self):
         self.print_header("Entering coordinates: [x coordinate] [y coordinate]")
         print(("[x coordinate] is the number of the row of the cell and [y coordinate] is the number of the"
-               " column of the cell. 0 (x coordinate) 0 (y coordinate) is the top left corner of the map. Coordinates"
-               " are 0 indexed."))
-        print("For example: \"0 1\" is the cell at the intersection of the 2nd column and the 1st row.")
+               " column of the cell. 1 (x coordinate) 1 (y coordinate) is the top left corner of the map. Coordinates"
+               " are 1 indexed."))
+        print("For example: \"1 2\" is the cell at the intersection of the 2nd column and the 1st row.")
         self.print_whitespace(1)
 
     def print_winning_conditions(self):
@@ -71,20 +71,32 @@ class MinesweeperUI:
     def print_losing_conditions(self):
         self.print_header("Lose conditions")
         print("If the number of lives goes below 0, the game is lost.")
-        self.print_whitespace(2)
+        self.print_whitespace(1)
+
+    def print_size_instructions(self):
+        self.print_header("Allowed map sizes")
+        print("Since the number of mines in maps of sizes below 3 is 1, they are not legal. Sizes >= 3 only allowed.")
+        self.print_whitespace(1)
+
+    def print_export_instructions(self):
+        self.print_header("Exporting maps")
+        print(("Maps exported have 2 integers in the first line: 1) The size of the map and 2) The number of mines in the map."
+                " Starting next line, the revealed version of the minesweeper map is printed."))
+        self.print_whitespace(1)
 
     def print_instructions(self):
         self.print_header("HOW TO PLAY")
         self.print_whitespace(1)
         print(": [mode] [x coordinate] [y coordinate]")
         self.print_whitespace(1)
+        self.print_size_instructions()
         self.print_coordinate_instructions()
         self.print_reveal_instructions()
         self.print_flag_instructions()
         self.print_quit_instructions()
         self.print_winning_conditions()
         self.print_losing_conditions()
-        self.print_whitespace(1)
+        self.print_export_instructions()
         self.go_back_to_menu()
 
     def print(self):
@@ -131,6 +143,7 @@ class MinesweeperUI:
         fil = open(str(int(round(time.time() * 1000)))+".txt", "w")
         self.game.export_map(out=fil.write)
         fil.close()
+        self.print_export_instructions()
         self.go_back_to_menu()
 
     def play(self):
@@ -169,22 +182,23 @@ class MinesweeperUI:
     def print_thankyou(self):
         self.print_header("THANK YOU for playing!")
         print("Feel free to reach out at @BaibhavVatsa on Twitter")
+        self.print_whitespace(1)
 
     def is_valid_size(self, size) -> (bool, int):
         try:
             size_val = int(size)
-            if size_val > 0:
+            if size_val >= 3:
                 return True, size_val
             return False, 0
         except:
             return False, 0
 
     def get_size(self):
-        size = input("Choose size of the Minesweeper Grid (> 0): ")
+        size = input("Choose size of the Minesweeper Grid (>= 3): ")
         self.print_whitespace(1)
         valid_int, self.size_value = self.is_valid_size(size)
         while not valid_int:
-            print("Please choose valid size (> 0)")
+            print("Please choose valid size (>= 3)")
             size = input("Choose size of the Minesweeper Grid: ")
             self.print_whitespace(1)
             valid_int, self.size_value = self.is_valid_size(size)
