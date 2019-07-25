@@ -132,7 +132,7 @@ class MinesweeperMap:
         stats_str += "Turns taken: " + str(self.turns) + "\t"
         stats_str += "Flagged places: " + str(self.flags) + "\t"
         stats_str += "Number of Mines: " + str(self.num_mines)
-        stats_str += "\n"
+        stats_str += "\n\n"
         return stats_str
 
     def get_map_str(self) -> str:
@@ -235,6 +235,7 @@ class MinesweeperMap:
         if not m == "q":
             while not m == "r":
                 self.flag(x, y)
+                out(self.get_play_str())        
                 m, x, y = self.accept_input()
 
             self.generate_map(x, y)
