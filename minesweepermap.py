@@ -223,6 +223,9 @@ class MinesweeperMap:
         self.generate_bombs(x, y)
         self.generate_hints()
 
+    def save_map(self, out = print):
+        out(str(self.size) + "\n" + self.get_play_str() + self.map_revealed())
+
     def export_map(self, out = print):
         self.generate_map(self.size//2, self.size//2)
         out(str(self.size) + " " + str(self.num_mines) + "\n" + self.map_revealed())

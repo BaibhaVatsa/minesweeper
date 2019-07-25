@@ -146,12 +146,19 @@ class MinesweeperUI:
         self.print_export_instructions()
         self.go_back_to_menu()
 
+    def save_map(self):
+        import time
+        fil = open(str(int(round(time.time() * 1000)))+".save", "w")
+        self.game.save_map(out=fil.write)
+        fil.close()
+
     def play(self):
         result = self.game.play(out=print)
-        if result != 1:
+        if result is not 1:
             print("Solution: ")
             self.print_all_revealed()
-
+        if result is 0:
+            self.save_map()
         self.go_back_to_menu()
 
     def go_back_to_menu(self):

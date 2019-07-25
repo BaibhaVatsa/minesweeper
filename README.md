@@ -36,7 +36,6 @@ cd minesweeper
 - [X] scoreboard
 - [X] formatted output
 - [X] export maps
+- [X] save progress
 - [ ] load maps
 - [ ] working agent
-- [ ] save progress
-- [ ] documentation
