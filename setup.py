@@ -1,13 +1,12 @@
 import setuptools
 
-with open("README.md", "r") as fh:
+with open("README_PyPI.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="python-minesweeper",
-    version="0.1.0",
+    version="0.1.1",
     author="Baibhav Vatsa",
-    author_email="baibhavvatsa@gmail.com",
     description="Minesweeper module for Python",
     long_description=long_description,
     long_description_content_type="text/markdown",

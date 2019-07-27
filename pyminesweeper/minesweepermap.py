@@ -146,7 +146,7 @@ class MinesweeperMap:
                 if self.map[i][j].state is State.FLAGGED:
                     map_str += "[|>]\t"
                 elif self.map[i][j].state is State.REVEALED:
-                    map_str += str(self.map[i][j].val if self.map[i][j].val is not -1 else "[X] ") + "\t"
+                    map_str += ((" " + str(self.map[i][j].val)) if self.map[i][j].val is not -1 else "[X] ") + "\t"
                 else:
                     map_str += "[ ] \t"
             map_str += "\n"

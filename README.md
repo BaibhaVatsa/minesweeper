@@ -1,26 +1,40 @@
 # Minesweeper
 
-Implementation of Minesweeper in Python. Written with Python 3.
+Implementation of Minesweeper game and agent in Python 3.
 
 ## Screenshots
 
 <img src="./screenshots/play.jpg" width="500" alt="A Game of 5x5 Map in progress"/>
 
 A Game of 5x5 Map in progress
-
+<br>
 <img src="./screenshots/exportedmap.jpg" width="500" alt="Sample exported 20x20 Map"/>
 
 Sample exported 20x20 Map
 
+## Modules
+
+pyminesweeper
+- MinesweeperMap
+   - Contains the functions to create the minesweeper grid and help connect to a frontend
+- MinesweeperUI
+   - Contains terminal UI for playing the game and functions to create a customised game UI
+
+## Installing
+
+```
+pip install python-minesweeper
+```
+
 ## How to Play
 
-```
-git clone https://github.com/BaibhaVatsa/minesweeper.git
-cd minesweeper
-./play.py
+```python
+import pyminesweeper
+game = pyminesweeper.MinesweeperUI()
+game.run()
 ```
 
-## Goals
+## Planned additions
 
 - [X] board representation
 - [X] board generation
@@ -39,3 +53,9 @@ cd minesweeper
 - [X] save progress
 - [ ] load maps
 - [ ] working agent
+
+## Development
+
+All kinds of contributions are very welcome.
+<br>
+Source: [python-minesweeper](https://github.com/BaibhaVatsa/python-minesweeper)
