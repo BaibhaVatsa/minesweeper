@@ -4,11 +4,11 @@ Implementation of Minesweeper in Python. Written with Python 3.
 
 ## Screenshots
 
-<img src="./images/play.jpg" width="500" alt="A Game of 5x5 Map in progress"/>
+<img src="./screenshots/play.jpg" width="500" alt="A Game of 5x5 Map in progress"/>
 
 A Game of 5x5 Map in progress
 
-<img src="./images/exportedmap.jpg" width="500" alt="Sample exported 20x20 Map"/>
+<img src="./screenshots/exportedmap.jpg" width="500" alt="Sample exported 20x20 Map"/>
 
 Sample exported 20x20 Map
 
