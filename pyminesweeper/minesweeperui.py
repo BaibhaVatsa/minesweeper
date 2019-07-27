@@ -1,19 +1,24 @@
-from minesweepermap import MinesweeperMap
+from .minesweepermap import MinesweeperMap
 import colorama
 import enum
+import os
+from typing import List, Tuple
 
 
+@enum.unique
 class MenuOptions(enum.Enum):
-    PLAY = "1"
-    EXPORT = "2"
-    HOWTO = "3"
-    ABOUT = "4"
-    EXIT = "5"
+    PLAY: int = "1"
+    EXPORT: int = "2"
+    # LOAD: int = "3"
+    HOWTO: int = "3"
+    ABOUT: int = "4"
+    EXIT: int = "5"
+
 
 
 class MinesweeperUI:
     def __init__(self):
-        colorama.init(autoreset=True)
+        colorama.init(autoreset = True)
 
     def print_welcome(self):
         print(colorama.Style.BRIGHT + colorama.Fore.BLUE + r"""
@@ -84,6 +89,12 @@ class MinesweeperUI:
                 " Starting next line, the revealed version of the minesweeper map is printed."))
         self.print_whitespace(1)
 
+    def print_load_instructions(self):
+        self.print_header("Saving and loading Maps")
+        print(("Maps are automatically saved when a game is ended before it ends. The name of file is the time"
+                " in milliseconds. A game can be loaded from the Menu when the game starts."))
+        self.print_whitespace(1)
+
     def print_instructions(self):
         self.print_header("HOW TO PLAY")
         self.print_whitespace(1)
@@ -94,6 +105,7 @@ class MinesweeperUI:
         self.print_reveal_instructions()
         self.print_flag_instructions()
         self.print_quit_instructions()
+        self.print_load_instructions()
         self.print_winning_conditions()
         self.print_losing_conditions()
         self.print_export_instructions()
@@ -117,12 +129,12 @@ class MinesweeperUI:
         self.print_header(self.game.get_stats_str())
         self.print_whitespace(1)
 
-    def print_whitespace(self, num):
+    def print_whitespace(self, num: int):
         for _ in range(num):
             print()
 
-    def print_header(self, str):
-        print(colorama.Style.BRIGHT + str)
+    def print_header(self, heading: str):
+        print(colorama.Style.BRIGHT + heading)
 
     def print_menu(self):
         self.print_header("MENU")
@@ -141,19 +153,19 @@ class MinesweeperUI:
     def export_map(self):
         import time
         fil = open(str(int(round(time.time() * 1000)))+".txt", "w")
-        self.game.export_map(out=fil.write)
+        self.game.export_map(out = fil.write)
         fil.close()
         self.print_export_instructions()
         self.go_back_to_menu()
 
     def save_map(self):
         import time
-        fil = open(str(int(round(time.time() * 1000)))+".save", "w")
-        self.game.save_map(out=fil.write)
+        fil = open("saves/" + str(int(round(time.time() * 1000)))+".save", "w")
+        self.game.save_map(out = fil.write)
         fil.close()
 
     def play(self):
-        result = self.game.play(out=print)
+        result = self.game.play(out = print)
         if result is not 1:
             print("Solution: ")
             self.print_all_revealed()
@@ -173,27 +185,27 @@ class MinesweeperUI:
         self.print_whitespace(1)
         self.go_back_to_menu()
 
-    def choose_option(self) -> str:
+    def choose_option(self) -> MenuOptions:
         self.print_menu()
-        choice = input("Choose option: ")
+        choice: str = input("Choose option: ")
         self.print_whitespace(1)
-        valid_options = [x.value for x in MenuOptions]
-        while choice not in valid_options:
+        valid_menu_options: List[str] = [menu_option.value for menu_option in MenuOptions]
+        while choice not in valid_menu_options:
             print("Please choose from valid options")
             self.print_whitespace(1)        
             self.print_menu()
             choice = input("Choose option: ")
             self.print_whitespace(1)
-        return choice
+        return MenuOptions(choice)
 
     def print_thankyou(self):
         self.print_header("THANK YOU for playing!")
         print("Feel free to reach out at @BaibhavVatsa on Twitter")
         self.print_whitespace(1)
 
-    def is_valid_size(self, size) -> (bool, int):
+    def is_valid_size(self, size: int) -> Tuple[bool, int]:
         try:
-            size_val = int(size)
+            size_val: int = int(size)
             if size_val >= 3:
                 return True, size_val
             return False, 0
@@ -201,32 +213,42 @@ class MinesweeperUI:
             return False, 0
 
     def get_size(self):
-        size = input("Choose size of the Minesweeper Grid (>= 3): ")
+        size: str = input("Choose size of the Minesweeper Grid (>= 3): ")
         self.print_whitespace(1)
-        valid_int, self.size_value = self.is_valid_size(size)
-        while not valid_int:
+        is_valid_input: bool
+        self.size_value: int
+        is_valid_input, self.size_value = self.is_valid_size(size)
+        while not is_valid_input:
             print("Please choose valid size (>= 3)")
             size = input("Choose size of the Minesweeper Grid: ")
             self.print_whitespace(1)
-            valid_int, self.size_value = self.is_valid_size(size)
+            is_valid_input, self.size_value = self.is_valid_size(size)
 
     def declare_minesweeper_map(self):
         self.get_size()
-        self.game = MinesweeperMap(self.size_value)
+        self.game: MinesweeperMap = MinesweeperMap(self.size_value)
+
+    # def load_game(self):
+    #     #TODO display list of files in the saves folder with timings
+    #     #TODO accept input and validate it and get the file
+    #     #TODO parse the file 
+    #     pass
 
     def run(self):
         self.print_welcome()
-        choice = self.choose_option()
-        while choice != MenuOptions.EXIT.value:
-            if choice == MenuOptions.PLAY.value or choice == MenuOptions.EXPORT.value:
+        choice: MenuOptions = self.choose_option()
+        while choice is not MenuOptions.EXIT:
+            if choice is MenuOptions.PLAY or choice is MenuOptions.EXPORT:
                 self.declare_minesweeper_map()
-                if choice == MenuOptions.PLAY.value:
+                if choice is MenuOptions.PLAY:
                     self.play()
                 else:
                     self.export_map()
-            elif choice == MenuOptions.HOWTO.value:
+            # elif choice is MenuOptions.LOAD:
+            #     self.load_game()
+            elif choice is MenuOptions.HOWTO:
                 self.print_instructions()
-            elif choice == MenuOptions.ABOUT.value:
+            elif choice is MenuOptions.ABOUT:
                 self.print_about()
             choice = self.choose_option()
         self.print_thankyou()

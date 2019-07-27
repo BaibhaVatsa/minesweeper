@@ -1,6 +1,6 @@
 # Minesweeper
 
-Implementation of Minesweeper in Python. Meant to help me learn about stuff. Written with Python 3.
+Implementation of Minesweeper in Python. Written with Python 3.
 
 ## Screenshots
 

@@ -1,4 +1,4 @@
-from minesweeperui import MinesweeperUI
+from pyminesweeper import MinesweeperUI
 
 if __name__ == "__main__":
     game = MinesweeperUI()
